@@ -1,0 +1,93 @@
+# First of all you need to create a file on your ansible server. In our example this file is called ApachePlaybook.yml 
+
+# gedit /etc/ansible/Apache.Playbook.yml
+
+# Whereby gedit starts the editor and /etc/ansible/ is the document path.
+
+
+# REALY REALY IMPORTANT @@@@@@@@@@@@@@@@@@@@@@@@@@@@ REALY REALY IMPORTANT #
+#                                                                          #
+#           The yml syntax uses blanks for indentation not tabs!           #
+#                                                                          #
+# REALY REALY IMPORTANT @@@@@@@@@@@@@@@@@@@@@@@@@@@@ REALY REALY IMPORTANT #
+
+# The beginning of the playbook ist indicated by three dashes. The following information are:
+
+---
+# name of the playbook
+-   name: deploywebserver
+
+# the list of hosts to which the playbook shall be applyed, as reference in the inventory
+    hosts: all
+
+# the user who is used to execute the playbooks commands on the client
+    remote_user: root
+
+# privilege escalation: you need root privileges at the client to execute this playbook
+    become: true
+
+# in the follwoing the (configuration-) tasks which are executed by the playbook are defined.
+# Be aware of the indentation of the tasks
+
+    tasks:
+    # task nr.1 is called install appache and uses apt to do so:
+         -  name: install appache
+            apt: name=apache2 update_cache=yes state=latest
+
+    # task nr.2 configures the document root where apache is looking for .html files, sets the
+    # owner of the directory to wwwdata (apache user) and sets the privileges (read wright execute) to 0755. 
+    # In our case the website will be calles. Our website is called helloWWW, therefore the document root directory is called the same 
+         -  name: create document root
+            file:
+             path: /var/www/helloWWW
+             state: directory
+             owner: www-data
+             mode: '0755'
+
+    # task nr.3 copies the website index.html from the ansible server to the clients document root. Of course the source file needs to be available at the given source directory. In a more  realistic example you could also copy a whole directory containing a more complex website consisting of many files instead of just the index.html. 
+         -  name: copy website
+            template:
+             src: index.html
+             dest: /var/www/helloWWW/index.html
+
+    # taks nr.4 copies the virtual host file helloWWW.conf to the clients destination
+    # Again, the source file needs to be available at the given source directory. 
+    #In other words, another preconfigured configaration file is copied from the ansible server to the client
+         -  name: copy vhost file
+            template:
+             src: helloWWW.conf
+             dest: /etc/apache2/sites-available/helloWWW.conf
+
+    # task nr.4 enables the new website on the client
+         -  name: enable new site
+            shell: a2ensite helloWWW.conf
+            notify: Reload Apache
+            # notify calls a handler and addresses it by name. In sthis case, Apache Reload
+
+    # task nr.5 disables appaches default site
+#         -  name: disable default site
+#            shell: a2dissite 000-default.conf
+#            when: disable_default
+#            notify: Reload Apache
+
+         -  name: disable default site
+            shell: a2dissite 000-default.conf
+            notify: Reload Apache
+
+# https://www.linkedin.com/pulse/resolving-restart-httpd-service-challenge-using-ansible-bharti
+# Handlers are tasks in Ansible that, unlike other tasks, run only when notified. Handlers uses a keyword 'notify'
+# to notify the handlers when there is any change in the part of task for which service need to be restarted. 
+# 'notify' is a pre-internal keyword in 'tasks' module and can be used anywhere or in any module in Ansible.
+  
+    handlers:
+    - name: Reload Apache
+      service:
+        name: apache2
+        state: reloaded
+
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+# Now that you have configured your playbook, this tutorial goes on with the file ExecutePlaybook. Time to order Pizza, it won't take long from here!

@@ -1,0 +1,47 @@
+---
+- name: deploywebserver
+  hosts: all
+  remote_user: root
+  become: true
+ 
+  tasks:
+  - name: install appache
+    apt: name=apache2 update_cache=yes state=latest
+
+  - name: create document root    
+    file:
+     path: /var/www/helloWWW
+     state: directory
+     owner: www-data
+     mode: "0755"
+
+  - name: copy website
+    template:
+     src: index.html
+     dest: /var/www/helloWWW/index.html
+    
+  - name: Copy vhost file
+    template:
+     src: helloWWW.conf
+     dest: /etc/apache2/sites-available/helloWWW.conf
+    
+  - name: enable new site
+    shell: a2ensite helloWWW
+    notify: Reload Apache
+    
+  - name: disable default site
+    shell: a2dissite 000-default.conf
+    notify: Reload Apache
+
+  handlers:
+  - name: Reload Apache
+    service:
+     name: apache2
+     state: reloaded
+  - name: Restart Apache
+    service:
+     name: apache2
+     state: restarted                
+
+
+
