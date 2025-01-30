@@ -1,14 +1,22 @@
-- name: Insert a line after a match
-  ansible.builtin.lineinfile:
-    path: /etc/somefile.conf
-    insertafter: 'Some existing line'
-    line: 'New line to insert'
+--- 
+ 
+- name: deploywebserver
+  hosts: all
+  remote_user: root
+  become: true
+ 
+  tasks:
+  - name: Insert a line after a match
+    ansible.builtin.lineinfile:
+      path: somefile.conf
+      insertafter: 'Some existing line'
+      line: 'New line to insert'
 
 
   - name: Insert/update "my block" in a file
-  ansible.builtin.blockinfile:
-    path: /etc/myfile.conf
-    block: |
-      This is the content
-      of my block
-    marker: "# {mark} My Block"
+    ansible.builtin.blockinfile:
+      path: myfile.conf
+      block: |
+        This is the content
+        of my block
+      marker: "# {mark} My Block"
