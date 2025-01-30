@@ -6,12 +6,24 @@
   become: true
  
   tasks:
+
+  - name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
+    ansible.builtin.file:
+      path: somefile.conf
+      state: touch
+      mode: u=rw,g=r,o=r  
+
   - name: Insert a line after a match
     ansible.builtin.lineinfile:
       path: somefile.conf
       insertafter: 'Some existing line'
       line: 'New line to insert'
 
+  - name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
+    ansible.builtin.file:
+      path: myfile.conf
+      state: touch
+      mode: u=rw,g=r,o=r  
 
   - name: Insert/update "my block" in a file
     ansible.builtin.blockinfile:
