@@ -1,1 +1,2 @@
 ansible-playbook -c=local --inventory=localhost, mod2file1.yml
+cat outputfile.conf

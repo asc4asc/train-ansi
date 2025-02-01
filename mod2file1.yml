@@ -1,6 +1,10 @@
 --- 
 - name: Write hostname to file
   hosts: all
+  vars: 
+    version4asc: '0.0.0.1'
+    # host: "{{ ansible_facts['hostname'] }}"
+    host: "otherserver"
  
   tasks:
   - name: Write file from template
