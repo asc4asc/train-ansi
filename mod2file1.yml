@@ -1,0 +1,10 @@
+--- 
+- name: Write hostname to file
+  hosts: all
+ 
+  tasks:
+  - name: Write file from template
+    ansible.builtin.template:
+      src: inputfile.j2
+      dest: outputfile.conf
+
