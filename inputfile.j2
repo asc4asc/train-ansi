@@ -1,1 +1,1 @@
-My name is {{ ansible_facts['hostname'] }}
+My name is {{ ansible_facts['hostname'] }} with ip {{ ansible_eth0.ipv4.address }}
