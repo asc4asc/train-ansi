@@ -3,11 +3,11 @@
   hosts: all
   become: true
   vars:
-    user: deploy
+    user: "{{ lookup('env','USER') }}" 
   tasks:
     - name: Add user to sudoers.d
       lineinfile:
-        path: /etc/sudoers.d/{{ user }}
+        path: /etc/sudoers.d/sudo_{{ user }}
         line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
         state: present
         create: yes
