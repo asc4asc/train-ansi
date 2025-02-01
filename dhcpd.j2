@@ -1,0 +1,35 @@
+# dhcpd.conf for a fai installation server2
+# replace faiserver with the name of your install server
+
+ignore-client-uids on;
+deny unknown-clients;
+option dhcp-max-message-size 2048;
+use-host-decl-names on;
+#always-reply-rfc1048 on;
+
+subnet {{ ipnet }}0 netmask 255.255.255.0 {
+   option routers {{ host }};
+   option domain-name "fai.example";
+   option domain-name-servers {{ ipnet }}{{ iphostend }};
+   option time-servers {{ host }};
+#   option ntp-servers faiserver2;
+   server-name {{ host }};
+   next-server {{ host }};
+   if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00000" {
+         filename "fai/pxelinux.0";
+   }
+   if substring(option vendor-class-identifier, 0, 20) = "PXEClient:Arch:00007" {
+         filename "fai/syslinux.efi";
+   }
+   allow unknown-clients;
+   pool {
+        range {{ ipnet}}100 {{ ipnet }}150;
+   }
+}
+
+host faiserver1 { hardware ethernet bc:24:11:00:00:01; fixed-address faiserver1; }
+host {{ host }} { hardware ethernet bc:24:11:00:00:02; fixed-address {{ host }}; }
+
+# generate a lot of entries with:
+# perl -e 'for (1..10) {printf "host client%02s {hardware ethernet XXX:$_;fixed-address client%02s;}\n",$_,$_;}'
+# then replace XXX with the hardware addresses of your clients
