@@ -1,2 +1,1 @@
-# ansible-playbook -c=local --inventory=localhost, static_ip.yml
-ansible-playbook -c=local --inventory=localhost, static_ip.yml  --extra-vars "static_ip_address=192.168.0.1 netmask=255.255.255.0 dns_server='8.8.8.8'"
+ansible-playbook -c=local --inventory=localhost, static_ip.yml -vvv

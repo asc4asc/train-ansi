@@ -1,18 +1,18 @@
 ---
- 
----
-- name: Run embedded script using Ansible
+- name: Run embedded script using Ansible asc
   hosts: all
+  become: yes 
+
   tasks:
     - name: Execute embedded script
       shell: |
-        #!/bin/bash
-        cat <<-EOF > /etc/network/interfaces.d/eth1
+        set -x
+        echo "This is a script running from within the playbook"
+        cat <<EOF > /etc/network/interfaces.d/eth1
         auto eth1         
         iface eth1 inet static
         address 192.168.66.252/24
         EOF
         echo "# Fertig ansible asc" >> /etc/network/interfaces.d/eth1
-        echo "This is a script running from within the playbook"
         # Add your script commands here
         echo "Script execution completed"
