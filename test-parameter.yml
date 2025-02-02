@@ -1,0 +1,13 @@
+---
+- name: Configure network for static IP address
+  hosts: all
+  become: yes
+ 
+  tasks:
+    - name: print values
+      ansible.builtin.debug:
+        msg: 
+        -  "var1 = {{ static_ip_address }}"
+        -  "var2 = {{ netmask }}"
+        -  "var3 = {{ dns_server }}"
+

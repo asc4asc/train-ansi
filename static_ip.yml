@@ -6,17 +6,12 @@
   tasks:
     - name: Configure network interface
       community.network.ipadm_addr:
-        name: "{{ ansible_default_ipv4.interface }}"
-        state: present
-        addr: "{{ static_ip_address }}/{{ netmask }}"
-        type: static
+        dest: /etc/network/interfaces.d/eth1
+        iface: eth1
+        option: mtu
+        value: 8000
+          #        backup: true
+          #        state: present
+          #      register: eth1_cfg      
  
-    - name: Configure DNS servers
-      lineinfile:
-        path: resolv.conf
-        line: "nameserver {{ dns_server }}"
- 
-    - name: Restart network service
-      service:
-        name: networking
-        state: restarted
+
