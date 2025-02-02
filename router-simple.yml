@@ -1,8 +1,13 @@
 ---
-- name: Configure Linux Router
+- name: Configure NFTables Router
   hosts: router
   become: yes
   tasks:
+    - name: Install nftables
+      apt:
+        name: nftables
+        state: present
+
     - name: Enable IP forwarding
       sysctl:
         name: net.ipv4.ip_forward
@@ -10,43 +15,18 @@
         state: present
         reload: yes
 
-    - name: Apply iptables rules
+    - name: Configure NFTables rules
       copy:
+        dest: /etc/nftables.conf
         content: |
-          *filter
-          :INPUT DROP [0:0]
-          :FORWARD DROP [0:0]
-          :OUTPUT ACCEPT [0:0]
-          -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-          -A INPUT -i lo -j ACCEPT
-          -A INPUT -p icmp -j ACCEPT
-          -A INPUT -m state --state NEW -p tcp --dport 22 -j ACCEPT
-          -A INPUT -m comment --comment "Default deny rule" -j REJECT
-          -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
-          -A FORWARD -i eth1 -o eth0 -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
-          COMMIT
-          *nat
-          :PREROUTING ACCEPT [0:0]
-          :INPUT ACCEPT [0:0]
-          :OUTPUT ACCEPT [0:0]
-          :POSTROUTING ACCEPT [0:0]
-          -A POSTROUTING -o eth0 -j MASQUERADE
-          COMMIT
-        dest: /etc/iptables/rules.v4
-        owner: root
-        group: root
-        mode: '0644'
-
-    - name: Ensure iptables-persistent is installed
-      apt:
-        name: iptables-persistent
-        state: present
-
-    - name: Load iptables rules
-      command: iptables-restore < /etc/iptables/rules.v4
-      notify:
-        - Save iptables rules
-
-  handlers:
-    - name: Save iptables rules
-      command: iptables-save > /etc/iptables/rules.v4
+          table ip nat {
+              chain postrouting {
+                  type nat hook postrouting priority 100; policy accept;
+                  oifname "eth0" masquerade
+              }
+          }
+    - name: Enable and start nftables service
+      systemd:
+        name: nftables
+        enabled: yes
+        state: started
