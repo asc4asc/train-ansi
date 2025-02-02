@@ -1,0 +1,22 @@
+---
+- name: Configure network for static IP address
+  hosts: all
+  become: yes
+ 
+  tasks:
+    - name: Configure network interface
+      community.network.ipadm_addr:
+        name: "{{ ansible_default_ipv4.interface }}"
+        state: present
+        addr: "{{ static_ip_address }}/{{ netmask }}"
+        type: static
+ 
+    - name: Configure DNS servers
+      lineinfile:
+        path: resolv.conf
+        line: "nameserver {{ dns_server }}"
+ 
+    - name: Restart network service
+      service:
+        name: networking
+        state: restarted
