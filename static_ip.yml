@@ -1,17 +1,18 @@
 ---
-- name: Configure network for static IP address
+ 
+---
+- name: Run embedded script using Ansible
   hosts: all
-  become: yes
- 
   tasks:
-    - name: Configure network interface
-      community.network.ipadm_addr:
-        dest: /etc/network/interfaces.d/eth1
-        iface: eth1
-        option: mtu
-        value: 8000
-          #        backup: true
-          #        state: present
-          #      register: eth1_cfg      
- 
-
+    - name: Execute embedded script
+      shell: |
+        #!/bin/bash
+        cat <<-EOF > /etc/network/interfaces.d/eth1
+        auto eth1         
+        iface eth1 inet static
+        address 192.168.66.252/24
+        EOF
+        echo "# Fertig ansible asc" >> /etc/network/interfaces.d/eth1
+        echo "This is a script running from within the playbook"
+        # Add your script commands here
+        echo "Script execution completed"
