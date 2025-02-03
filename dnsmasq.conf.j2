@@ -1,0 +1,13 @@
+# Configuration file for dnsmasq
+
+# Listen on this specific interface
+interface=eth0
+
+# DHCP range and lease time
+dhcp-range=192.168.0.101,192.168.0.150,12h
+
+# Default gateway
+dhcp-option=3,192.168.0.1
+
+# DNS servers
+dhcp-option=6,8.8.8.8,8.8.4.4
