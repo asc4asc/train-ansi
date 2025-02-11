@@ -1,3 +1,4 @@
+#!/usr/bin/ansible-playbook --inventory=localhost,
 # First of all you need to create a file on your ansible server. In our example this file is called ApachePlaybook.yml 
 
 # gedit /etc/ansible/Apache.Playbook.yml
