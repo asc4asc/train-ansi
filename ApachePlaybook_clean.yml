@@ -1,3 +1,4 @@
+#!/usr/bin/ansible-playbook --inventory=localhost,
 ---
 - name: deploywebserver
   hosts: all
