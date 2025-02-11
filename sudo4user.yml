@@ -1,3 +1,4 @@
+#!/usr/bin/ansible-playbook --inventory=localhost,
 ---
 - name: Manage sudoers.d files
   hosts: all
