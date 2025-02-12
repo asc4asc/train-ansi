@@ -1,7 +1,7 @@
-#!/usr/bin/ansible-playbook --connection=local --inventory=localhost, $@ 
+#!/usr/bin/ansible-playbook --connection=local --inventory=localhost, -e 'my_hosts=localhost' $@ 
 ---
 - name: Update debian system
-  hosts: localhost
+  hosts: hosts: '{{ my_hosts | default("all") }}'
   become: true
   tasks:  
     - name: Update apt package lists
