@@ -1,14 +1,15 @@
-#!/usr/bin/ansible-playbook --inventory=localhost,
+#!/usr/bin/ansible-playbook --connection=local --inventory=localhost, $@
+# Please use it with -K to become a password for sudo.
 ---
 - name: Manage sudoers.d files
-  hosts: all
+  hosts: localhost
   become: true
   vars:
     user: "{{ lookup('env','USER') }}" 
   tasks:
     - name: Add user to sudoers.d
       lineinfile:
-        path: /etc/sudoers.d/sudo_{{ user }}
+        path: /etc/sudoers.d/sudo4{{ user }}
         line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
         state: present
         create: yes

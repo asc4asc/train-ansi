@@ -1,0 +1,15 @@
+#!/usr/bin/ansible-playbook --connection=local --inventory=localhost, $@ 
+---
+- name: Update debian system
+  hosts: localhost
+  become: true
+  tasks:  
+    - name: Update apt package lists
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 86400
+    - name: Upgrade packages
+      ansible.builtin.apt:
+        upgrade: dist
+        autoremove: true
+        autoclean: true
