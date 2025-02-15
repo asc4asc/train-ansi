@@ -1,2 +1,0 @@
-ansible-playbook -c=local --inventory=localhost, sudo4user.yml
-
