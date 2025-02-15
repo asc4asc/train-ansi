@@ -1,6 +1,10 @@
+# Sachen zur Information:
+
 ansible -i 192.168.0.62, -m setup 192.168.0.62
 
 ansible -m setup localhost
+
+ansible-inventory --list
 
 https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
 
