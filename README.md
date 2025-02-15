@@ -4,3 +4,5 @@ Do make from a playbook a executable brogramm
 ```
 #!/usr/bin/ansible-playbook --inventory=localhost,
 ```
+
+Has some problem with command line attributes
