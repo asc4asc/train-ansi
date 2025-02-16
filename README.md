@@ -14,3 +14,7 @@ Do make from a playbook a executable brogramm
 ```
 
 Has some problem with command line attributes
+
+After install before first ssh in. But only in secure space.
+ssh-keyscan -H host >> ~/.ssh/known_hosts
+
