@@ -1,7 +1,5 @@
 # Sachen zur Information:
 
-Natürlich! Hier ist der Markdown-Text, den du direkt kopieren und einfügen kannst:
-
 # Ansible verwenden: Verschiedene Ansätze
 
 ## 1. Ansible lokal verwenden
