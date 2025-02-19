@@ -51,8 +51,6 @@ Um direkte Befehle lokal auszuführen, können die Parameter `-i localhost,` und
 ### Beispiel:
 ```bash
 ansible all -i localhost, -m shell -a "echo Hello, World!" --connection=local
-```
-
 In diesem Beispiel wird der Shell-Befehl `echo Hello, World!` lokal ausgeführt.
 ```
 
