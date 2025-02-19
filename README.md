@@ -1,15 +1,14 @@
 # Sachen zur Information:
 
 # Ansible verwenden: Verschiedene Ansätze
-
+( Achtung mit copilot erzeugt, muss noch korrigiert und getestet werden! )
 ## 1. Ansible lokal verwenden
 
-Ansible kann lokal verwendet werden, um Aufgaben auf dem aktuellen System auszuführen. Dies ist nützlich für Einzelplatzrechner oder wenn nur wenige Hosts verwaltet werden müssen.
+Ansible kann lokal verwendet werden, um Aufgaben auf dem aktuellen System auszuführen. Dies ist nützlich für Einzelplatzrechner oder wenn nur wenige Hosts verwaltet werden müssen. Oder man playbooks testen möchte.
 
 ```bash
 ansible all -i localhost, -m ping --connection=local
 ```
-
 In diesem Beispiel wird das `ping`-Modul verwendet, um eine Verbindung zum lokalen Host herzustellen und zu testen.
 
 ## 2. Ansible vom Server (Remote) verwenden
@@ -40,11 +39,12 @@ Hier wird das `site.yml` Playbook auf den in der Inventardatei definierten Hosts
 ### Beispiel:
 ```bash
 ansible-pull -U https://github.com/your-repo/your-playbook-repo.git
-```
 
+ansible-pull --inventory localhost, --connection=local -U https://github.com/your-repo/your-playbook-repo.git
+```
 In diesem Beispiel wird das Playbook-Repository von GitHub geklont und auf dem Host ausgeführt.
 
-## 4. Direkte Befehle mit -i localhost, und --connection=local
+## 4. Befehle mit --inventory localhost, und --connection=local
 
 Um direkte Befehle lokal auszuführen, können die Parameter `-i localhost,` und `--connection=local` verwendet werden.
 
@@ -52,6 +52,9 @@ Um direkte Befehle lokal auszuführen, können die Parameter `-i localhost,` und
 ```bash
 ansible all -i localhost, -m shell -a "echo Hello, World!" --connection=local
 In diesem Beispiel wird der Shell-Befehl `echo Hello, World!` lokal ausgeführt.
+
+ansible-playbook ---inventory localhost, --connection=local playbook.yml
+In diesem Beispiel wird ein Playbook local ausgefürt ohne ssh Verbindung
 ```
 
 # Idempotenz 
