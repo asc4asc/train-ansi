@@ -72,11 +72,7 @@ https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_m
 
 Do make from a playbook a executable brogramm
 ```
-#!/usr/bin/ansible-playbook --inventory=localhost,
+#!/usr/bin/ansible-playbook -c=local --inventory=localhost, $@
 ```
 
-Has some problem with command line attributes
-
-After install before first ssh in. But only in secure space.
-ssh-keyscan -H host >> ~/.ssh/known_hosts
 
