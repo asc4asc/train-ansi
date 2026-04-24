@@ -34,6 +34,10 @@ ACHTUNG: localhost, 127.0.0.1, und IP, des Rechners werden getrennt verwaltet.
 ```
 Mit ssh user@127.0.0.1 testen. 
 ```
+#### Info
+```
+ansible all -i "127.0.0.2," -m ping -e 'ansible_ssh_common_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
+```
 ## Ansible-pull verwenden
 
 `ansible-pull` ist eine Alternative zu `ansible-push`. Es zieht die Playbooks von einem Versionskontrollsystem (z.B. Git) auf den Remote-Host und führt sie dort aus. 
