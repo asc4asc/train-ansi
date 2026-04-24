@@ -2,6 +2,18 @@
 
 # Ansible verwenden: Verschiedene Ansätze
 
+## Ansible-pull verwenden
+
+`ansible-pull` ist eine Alternative zu `ansible-push`. Es zieht die Playbooks von einem Versionskontrollsystem (z.B. Git) auf den Remote-Host und führt sie dort aus. 
+
+### Beispiel:
+```bash
+ansible-pull -U https://github.com/your-repo/your-playbook-repo.git
+
+ansible-pull --inventory localhost, --connection=local -U https://github.com/your-repo/your-playbook-repo.git
+```
+In diesem Beispiel wird das Playbook-Repository von GitHub geklont und auf dem Host ausgeführt.
+
 ## Ansible lokal verwenden
 
 Ansible kann lokal verwendet werden, um Aufgaben auf dem aktuellen System auszuführen. Dies ist nützlich für Einzelplatzrechner oder wenn nur wenige Hosts verwaltet werden müssen. Oder man playbooks testen möchte.
@@ -41,18 +53,6 @@ ansible all -i "127.0.0.2," -m ping -e 'ansible_ssh_common_args="-o StrictHostKe
 ssh-keygen -R 127.0.0.1
 ssh-keyscan -H 127.0.0.1 >> ~/.ssh/known_hosts
 ansible all -i 127.0.0.1, -m ping
-```
-## Ansible-pull verwenden
-
-`ansible-pull` ist eine Alternative zu `ansible-push`. Es zieht die Playbooks von einem Versionskontrollsystem (z.B. Git) auf den Remote-Host und führt sie dort aus. 
-
-### Beispiel:
-```bash
-ansible-pull -U https://github.com/your-repo/your-playbook-repo.git
-
-ansible-pull --inventory localhost, --connection=local -U https://github.com/your-repo/your-playbook-repo.git
-```
-In diesem Beispiel wird das Playbook-Repository von GitHub geklont und auf dem Host ausgeführt.
 
 ## Befehle mit --inventory localhost, und --connection=local
 
