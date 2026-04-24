@@ -34,9 +34,13 @@ ACHTUNG: localhost, 127.0.0.1, und IP, des Rechners werden getrennt verwaltet.
 ```
 Mit ssh user@127.0.0.1 testen. 
 ```
-#### Info
+#### Infos
 ```
 ansible all -i "127.0.0.2," -m ping -e 'ansible_ssh_common_args="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"'
+
+ssh-keygen -R 127.0.0.1
+ssh-keyscan -H 127.0.0.1 >> ~/.ssh/known_hosts
+ansible all -i 127.0.0.1, -m ping
 ```
 ## Ansible-pull verwenden
 
