@@ -45,7 +45,7 @@ Aus einem playbook ein programm machen.
 ```
 #!/usr/bin/ansible-playbook -c=local --inventory=localhost, $@
 ```
-
+Abspeichern ausführbar machen und dann aufrufen mit anhängen des playbooks.
 
 ## 2. Ansible vom Server (Remote) verwenden. (das eigentliche Ansible Konzept!) 
 
@@ -76,6 +76,8 @@ ist ein zentrales Konzept in Ansible und bezieht sich auf die Eigenschaft, dass 
 
 Hier ein Beispiel, um das Konzept zu verdeutlichen: Angenommen, du möchtest sicherstellen, dass ein bestimmtes Paket auf einem Server installiert ist. In Ansible könntest du eine Aufgabe definieren, die überprüft, ob das Paket bereits installiert ist und es nur dann installiert, wenn es fehlt. Wenn diese Aufgabe mehrfach ausgeführt wird, wird das Paket nur einmal installiert, was den idempotenten Charakter der Operation zeigt.
 
+----
+
 ansible -i 192.168.0.62, -m setup 192.168.0.62
 
 ansible -m setup localhost
@@ -83,4 +85,3 @@ ansible -m setup localhost
 ansible-inventory --list
 
 https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
-
