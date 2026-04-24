@@ -17,6 +17,17 @@ ansible all --inventory localhost, --connection=local -m ansible.builtin.command
 ansible all --inventory localhost, --connection=local -m ansible.builtin.command -a "ping -c 3 8.8.8.8"
 ```
 
+## Langsam in Richtung Netzwerk!
+Mehrere hosts mit ssh erreichen. 
+```bash
+ansible all -i "192.168.1.10,192.168.1.11,192.168.1.12," -m ping
+```
+Einfachste Version auf dem Host aber mit IP. Dann mal die Netzwerk IP nutzen.
+```bash
+ansible all --inventory localhost, --connection=local -m ansible.builtin.command -a "ping -c 3 127.0.0.1"
+ansible all -i "127.0.0.1," -m ping # fuer diesen Fall muss ssh localhost funktionieren
+```
+
 ## Ansible-pull verwenden
 
 `ansible-pull` ist eine Alternative zu `ansible-push`. Es zieht die Playbooks von einem Versionskontrollsystem (z.B. Git) auf den Remote-Host und führt sie dort aus. 
