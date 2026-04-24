@@ -11,9 +11,10 @@ ansible all --inventory localhost, -m ping --connection=local
 ```
 In diesem Beispiel wird das `ping`-Modul verwendet, um eine Verbindung zum lokalen Host herzustellen und zu testen.
 
-ACHTUNG das ist nicht das Netzwerk ping sondern nur ein vergleichbares Programm in ansible. Zum Vergleich ein netz ping!
+ACHTUNG das ist nicht das Netzwerk ping sondern nur ein vergleichbares Programm in ansible. Zum Vergleich ein netz ping! Local und nach google ins Internet.
 ```
-ansible all --inventory localhost, --connection=local -m ansible.builtin.command -a "ping -c 1 8.8.8.8"
+ansible all --inventory localhost, --connection=local -m ansible.builtin.command -a "ping -c 3 127.0.0.1"
+ansible all --inventory localhost, --connection=local -m ansible.builtin.command -a "ping -c 3 8.8.8.8"
 ```
 
 ## Ansible-pull verwenden
