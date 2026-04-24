@@ -1,8 +1,8 @@
 # Sachen zur Information:
 
 # Ansible verwenden: Verschiedene Ansätze
-( Achtung mit copilot erzeugt, muss noch korrigiert und getestet werden! )
-## 1. Ansible lokal verwenden
+
+## Ansible lokal verwenden
 
 Ansible kann lokal verwendet werden, um Aufgaben auf dem aktuellen System auszuführen. Dies ist nützlich für Einzelplatzrechner oder wenn nur wenige Hosts verwaltet werden müssen. Oder man playbooks testen möchte.
 
@@ -13,9 +13,41 @@ In diesem Beispiel wird das `ping`-Modul verwendet, um eine Verbindung zum lokal
 
 ACHTUNG das ist nicht das Netzwerk ping sondern nur ein vergleichbares Programm in ansible.
 
-## 2. Ansible vom Server (Remote) verwenden
+## Ansible-pull verwenden
+
+`ansible-pull` ist eine Alternative zu `ansible-push`. Es zieht die Playbooks von einem Versionskontrollsystem (z.B. Git) auf den Remote-Host und führt sie dort aus. 
+
+### Beispiel:
+```bash
+ansible-pull -U https://github.com/your-repo/your-playbook-repo.git
+
+ansible-pull --inventory localhost, --connection=local -U https://github.com/your-repo/your-playbook-repo.git
+```
+In diesem Beispiel wird das Playbook-Repository von GitHub geklont und auf dem Host ausgeführt.
+
+## Befehle mit --inventory localhost, und --connection=local
+
+Um direkte Befehle lokal auszuführen, können die Parameter `-i localhost,` und `--connection=local` verwendet werden.
+
+### Beispiel:
+```bash
+ansible all -i localhost, -m shell -a "echo Hello, World!" --connection=local
+In diesem Beispiel wird der Shell-Befehl `echo Hello, World!` lokal ausgeführt.
+
+ansible-playbook ---inventory localhost, --connection=local playbook.yml
+In diesem Beispiel wird ein Playbook local ausgeführt ohne ssh Verbindung
+```
+Aus einem playbook ein programm machen.
+```
+#!/usr/bin/ansible-playbook -c=local --inventory=localhost, $@
+```
+
+
+## 2. Ansible vom Server (Remote) verwenden. (das eigentliche Ansible Konzept!) 
 
 Wenn Ansible auf mehreren Remote-Hosts verwendet werden soll, kann man eine Inventardatei erstellen und das `ansible`-Kommando benutzen, um Playbooks oder Module auf diesen Hosts auszuführen.
+
+Hier kommen auch Variablen für Gruppen .... ins Spiel die ganze Infrastruckturen einfach abbilden können.
 
 ### Beispiel-Inventardatei (hosts.ini):
 ```ini
@@ -31,33 +63,9 @@ Wenn Ansible auf mehreren Remote-Hosts verwendet werden soll, kann man eine Inve
 ```bash
 ansible-playbook -i hosts.ini site.yml
 ```
-
 Hier wird das `site.yml` Playbook auf den in der Inventardatei definierten Hosts ausgeführt.
 
-## 3. Ansible-pull verwenden
-
-`ansible-pull` ist eine Alternative zu `ansible-push`. Es zieht die Playbooks von einem Versionskontrollsystem (z.B. Git) auf den Remote-Host und führt sie dort aus. Dies ist nützlich, um sicherzustellen, dass alle Hosts stets mit den neuesten Konfigurationen aktualisiert werden.
-
-### Beispiel:
-```bash
-ansible-pull -U https://github.com/your-repo/your-playbook-repo.git
-
-ansible-pull --inventory localhost, --connection=local -U https://github.com/your-repo/your-playbook-repo.git
-```
-In diesem Beispiel wird das Playbook-Repository von GitHub geklont und auf dem Host ausgeführt.
-
-## 4. Befehle mit --inventory localhost, und --connection=local
-
-Um direkte Befehle lokal auszuführen, können die Parameter `-i localhost,` und `--connection=local` verwendet werden.
-
-### Beispiel:
-```bash
-ansible all -i localhost, -m shell -a "echo Hello, World!" --connection=local
-In diesem Beispiel wird der Shell-Befehl `echo Hello, World!` lokal ausgeführt.
-
-ansible-playbook ---inventory localhost, --connection=local playbook.yml
-In diesem Beispiel wird ein Playbook local ausgefürt ohne ssh Verbindung
-```
+Dies ist nützlich, um sicherzustellen, dass alle Hosts stets mit den neuesten Konfigurationen aktualisiert werden.
 
 # Idempotenz 
 ist ein zentrales Konzept in Ansible und bezieht sich auf die Eigenschaft, dass eine Operation mehrmals ausgeführt werden kann, ohne das Endergebnis zu verändern. Das bedeutet, dass wenn ein Playbook oder ein Task in Ansible mehrfach ausgeführt wird, das System am Ende immer denselben Zustand hat.
@@ -71,10 +79,4 @@ ansible -m setup localhost
 ansible-inventory --list
 
 https://docs.ansible.com/ansible/latest/collections/ansible/builtin/lineinfile_module.html
-
-Do make from a playbook a executable brogramm
-```
-#!/usr/bin/ansible-playbook -c=local --inventory=localhost, $@
-```
-
 
