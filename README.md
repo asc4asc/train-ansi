@@ -11,6 +11,8 @@ ansible all -i localhost, -m ping --connection=local
 ```
 In diesem Beispiel wird das `ping`-Modul verwendet, um eine Verbindung zum lokalen Host herzustellen und zu testen.
 
+ACHTUNG das ist nicht das Netzwerk ping sondern nur ein vergleichbares Programm in ansible.
+
 ## 2. Ansible vom Server (Remote) verwenden
 
 Wenn Ansible auf mehreren Remote-Hosts verwendet werden soll, kann man eine Inventardatei erstellen und das `ansible`-Kommando benutzen, um Playbooks oder Module auf diesen Hosts auszuführen.
