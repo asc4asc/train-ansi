@@ -25,9 +25,15 @@ ansible all -i "192.168.1.10,192.168.1.11,192.168.1.12," -m ping
 Einfachste Version auf dem Host aber mit IP. Dann mal die Netzwerk IP nutzen.
 ```bash
 ansible all --inventory localhost, --connection=local -m ansible.builtin.command -a "ping -c 3 127.0.0.1"
-ansible all -i "127.0.0.1," -m ping # fuer diesen Fall muss ssh localhost funktionieren
+ansible all -i "127.0.0.1," -m ping -u user -k # -b fuer root. Wenn ssh mit passwort moeglich ist. 
+ansible all -i "127.0.0.1," -m ping # fuer diesen Fall muss ssh 127.0.0.1 (localhost) funktionieren.
 ```
+Immer müssen die .ssh/ keys passen. authorized_keys und known_hosts 
 
+ACHTUNG: localhost, 127.0.0.1, und IP, des Rechners werden getrennt verwaltet.
+```
+Mit ssh user@127.0.0.1 testen. 
+```
 ## Ansible-pull verwenden
 
 `ansible-pull` ist eine Alternative zu `ansible-push`. Es zieht die Playbooks von einem Versionskontrollsystem (z.B. Git) auf den Remote-Host und führt sie dort aus. 
